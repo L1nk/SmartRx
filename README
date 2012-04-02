@@ -1,0 +1,6 @@
+Authors: Nicolas Kendall-Bar, Albert Cho, Alec McCormick and Paulo Panaligan
+Copyright 2012
+
+SmartRx prescription scheduler IBM ILOG OPL module.
+
+To run utilize the oplrun command within the SmartRx directory.
