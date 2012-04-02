@@ -4,3 +4,33 @@ Copyright 2012
 SmartRx prescription scheduler IBM ILOG OPL module.
 
 To run utilize the oplrun command within the SmartRx directory.
+
+Here are a few git pointers for uploading to your repository.
+
+Use $ git status
+
+To see a list of files and their status in the repository.  
+ - untracked/new means it's not in the repository and needs to be added
+ - modified means that it's in the repository but there are pending changes
+ - deleted means that it's been removed from the repository
+
+Use $ git add filename1 filename2
+
+To add filename1 and filename2 to the repository and start tracking them.
+You can also use directoryname/ to add the entire directoryname to the repository
+
+Use $ git rm filename1 filename2
+
+To remove filename1 and filename2 from the repository and your filesystem
+
+Use $ git commit -m 'commit message here'
+
+To commit your changes and ready them for pushing to the repository with message
+'commit message here'
+
+Use $ git push
+
+To update the repository with your changes
+
+Once this is done, go to github.com/L1nk/SmartRx and make a pull request on my project.
+This will send me a message so I can merge your changes with the original project.
