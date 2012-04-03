@@ -2,6 +2,8 @@ Need to model following constraints:
 Full day
 More conflicts between prescriptions
 Required assignments selected by user
+Week and day scheduling
+Time interval implementation needs to be fixed
 
 Need to explain/display:
 Max amount of prescriptions
