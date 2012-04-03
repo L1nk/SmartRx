@@ -34,3 +34,26 @@ To update the repository with your changes
 
 Once this is done, go to github.com/L1nk/SmartRx and make a pull request on my project.
 This will send me a message so I can merge your changes with the original project.
+
+Tuple variable definitions
+
+tuple block {
+  key int id;
+  float start;
+  float end;
+  int meal; 
+}
+
+tuple drug {
+  key string name;
+  int priority;
+  int maxPerDay;
+  float timeInterval;
+  // 0 = empty stomach, 1 = take with meal, 2 = doesn't matter 
+  int meal; 
+}
+
+tuple drugPair {
+  drug d1;
+  drug d2;
+}  
