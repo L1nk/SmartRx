@@ -2,6 +2,6 @@
 
 <settings version="2">
   <category name="language">
-    <setting name="displayindex" value="true"/>
+    <setting name="displayindex" value="false"/>
   </category>
 </settings>
