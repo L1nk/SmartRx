@@ -34,6 +34,12 @@ tuple drugPair {
 {drugPair} DrugIncompat
 	with d1 in Drugs, d2 in Drugs = ...;
 int RequiredAssignments[Drugs][Blocks] = ...;
+int MaxDrugsPerBlock = ...;
+
+float AbsStartTime[b in Blocks]= b.start + ord(Weekdays, b.day)*24; 
+float AbsEndTime[b in Blocks]= b.end + ord(Weekdays,b.day)*24 +(( b.start > b.end )?24:0);
+
+int incompatBlocks[d in Drugs][b1 in Blocks][b2 in Blocks] = ((d.timeInterval <= abs(AbsEndTime[b2] - AbsStartTime[b1])) ? 0 : 1); 
 
 dvar int DrugAssignments[Drugs][Blocks] in 0..1;
 
@@ -45,24 +51,20 @@ maximize
 
 subject to {
   //time interval constraint
-  /*
-  forall(d in Drugs, b in Blocks) {
-    forall(others in Blocks : others != b){
-    if (abs(b.start - others.start) <= d.timeInterval){
-      DrugAssignments[d][others] == 0;
-  }  
-}  
-} 
-  forall(d in Drugs, b in Blocks, c in Blocks :c.start < (b.start + d.timeInterval) && c.id != b.id){
-     ctTimeIntervalConstraints:
-     DrugAssignments[d][b] + DrugAssignments[d][c] <= 1;          
-  } 
-  */
+  forall( d in Drugs)
+  forall( b in Blocks)
+    sum( b2 in Blocks : incompatBlocks[d][b][b2] ==1)
+      DrugAssignments[d][b2] <=1;
+  
   //respect Drug Incompatibility 
   forall( <d1, d2> in DrugIncompat , b in Blocks )
     //ctIncompatibilityConstraint:
     DrugAssignments[d1][b] + DrugAssignments[d2][b] <=1;
   
+  //respect Max Drugs Per Block constraint
+  forall( b in Blocks)
+    sum(d in Drugs)
+      DrugAssignments[d][b] <= MaxDrugsPerBlock;
   
   //respect per day constraint
   forall(d in Drugs, day in Weekdays){
@@ -96,4 +98,12 @@ subject to {
        ctRequiredAssignmentConstraints:
          DrugAssignments[d][b] == 1;        
        }
+       
+   //respect disallowing assignments
+        // respect required assignments
+     forall( d in Drugs, b in Blocks : RequiredAssignments[d][b] == 2 ){
+       ctRequiredNonAssignmentConstraints:
+         DrugAssignments[d][b] == 0;        
+       }
+       
 }
