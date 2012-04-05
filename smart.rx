@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# This script is run whenever a prescription schedule is to be 
+# generated using the IBM ILOG constraint solver.
+#
+# Author: Paulo Panaligan
+# Copyright 2012
+#
+# Options:
+# -v verbose
+# -t test mode, no files shown
+# -s shows oplrun options for debugging
+
+eval set -- $(getopt -n $0 -o "-v:" -- "$@")
+
+declare v t
+declare filename
+declare -a params
+
+t=0
+s=0 
+
+while [ $# -gt 0 ] ; do
+        case "$1" in
+                -v) v=1 ; shift ;;
+		-t) t=1 ; shift ;;
+		-s) s=1 ; shift ;;
+                --) shift ;;
+                -*) echo "bad option '$1'" ; exit 1 ;;
+                *) params=("${params[@]}" "$1") ; shift ;;
+         esac
+done
+
+if [ ${#params[2]} -ne 0 ] ; then
+	echo Too many parameters entered. Only .dat file and userId needed.
+	exit 1
+fi
+
+if [ ${#params[1]} -eq 0 -a -z "$t" ] ; then
+	echo userID needed to generate filename.
+	exit 1
+fi
+
+if [ ${#params} -eq 0 ] ; then
+        echo .dat file required
+        exit 1
+fi
+
+[ ! -z "$v" ] && echo "verbose output on"
+[ ! -z "$s" ] && echo "oplrun option check"
+[ ! -z "$t" ] && echo "test mode on, file generation off"
+[ ! -z "$v" ] && echo ".dat file: ${params[0]}"
+[ ! -z "$v" ] && echo "userID: ${params[1]}"
+
+if [ $s -eq 1 ] ; then
+	/opt/ibm/ILOG/CPLEX_Studio_Academic123/opl/bin/x86_sles10_4.1/oplrun
+fi
+
+if [ $t -eq 0 ] ; then
+	filename=${params[1]}.sc
+	[ ! -z "$v" ] && echo "$filename"
+	touch temp
+	/opt/ibm/ILOG/CPLEX_Studio_Academic123/opl/bin/x86_sles10_4.1/oplrun -deploy -v SmartRx.mod "${params[0]}" >> temp
+fi
+
+if [ $t -eq 1 ] ; then
+	/opt/ibm/ILOG/CPLEX_Studio_Academic123/opl/bin/x86_sles10_4.1/oplrun -deploy -v SmartRx.mod "${params[0]}"
+fi
+
+sed '1,26d' temp >> $filename
+rm temp
