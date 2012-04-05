@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?><project>
+	<version>1.0</version>
+	<configs>
+		<config default="false" name="Configuration1" category="opl">
+			<ref type="setting" name="drugs.ops">
+			</ref>
+			<ref type="data" name="drugs.dat">
+			</ref>
+			<ref type="model" name="drugs_v1.mod">
+			</ref>
+		</config>
+		<config default="true" name="simple config" category="opl">
+			<ref type="model" name="drugs.mod">
+			</ref>
+			<ref type="setting" name="drugs.ops">
+			</ref>
+			<ref type="data" name="drugs.dat">
+			</ref>
+		</config>
+	</configs>
+	
+</project>
