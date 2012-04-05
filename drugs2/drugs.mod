@@ -17,7 +17,7 @@ tuple drug {
 }
 
 tuple block {
-  key int id;
+  int id;
   string day;
   float start;
   float end;
